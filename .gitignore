@@ -1,0 +1,14 @@
+.idea/
+.vs/
+Build/
+Binaries/
+Content/
+DerivedDataCache/
+Intermediate/
+Saved/
+Config/DefaultEngine.ini
+Config/DefaultCrypto.ini
+ECR.png
+*.user
+__pycache__/
+Releases/
