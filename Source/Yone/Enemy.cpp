@@ -3,6 +3,7 @@
 
 #include "Enemy.h"
 
+#include "YoneGameModeBase.h"
 #include "Kismet/GameplayStatics.h"
 
 // Sets default values
@@ -79,7 +80,7 @@ void AEnemy::Die()
 	CapsuleComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
 	EnemyDiedDelegate.Broadcast();
-
+	
 	UGameplayStatics::PlaySound2D(GetWorld(), DieSound);
 	
 	GetWorldTimerManager().SetTimer(DestoryTimer, this, &AEnemy::OnDestroyTimerTimeOut, 1, false, 10);
@@ -87,6 +88,6 @@ void AEnemy::Die()
 
 void AEnemy::OnDestroyTimerTimeOut()
 {
-	
+	Destroy();
 }
 

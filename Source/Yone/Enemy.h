@@ -3,16 +3,17 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "PaperFlipbookComponent.h"
-#include "YonePawn.h"
-#include "Components/CapsuleComponent.h"
 #include "GameFramework/Actor.h"
+
+#include "Components/CapsuleComponent.h"
+#include "PaperFlipbookComponent.h"
 #include "Sound/SoundBase.h"
 #include "Engine/TimerHandle.h"
+#include "YonePawn.h"
 
 #include "Enemy.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FEnemyDiedDelegate);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FEnemyDiedEvent);
 
 UCLASS()
 class YONE_API AEnemy : public AActor
@@ -34,6 +35,7 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	AYonePawn* Player;
 
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool IsAlive = true;
 
@@ -49,7 +51,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FTimerHandle DestoryTimer;
 
-	FEnemyDiedDelegate EnemyDiedDelegate;
+	FEnemyDiedEvent EnemyDiedDelegate;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
