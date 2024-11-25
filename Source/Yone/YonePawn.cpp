@@ -4,9 +4,12 @@
 #include "YonePawn.h"
 
 #include "Bullet.h"
+#include "Enemy.h"
 #include "InputMappingContext.h"
+#include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 
+class AEnemy;
 // Sets default values
 AYonePawn::AYonePawn()
 {
@@ -44,6 +47,8 @@ void AYonePawn::BeginPlay()
 			Subsystem->AddMappingContext(MappingContext, 0);
 		}	
 	}
+
+	Capsule->OnComponentBeginOverlap.AddDynamic(this, &AYonePawn::OverlapBegin);
 }
 
 // Called every frame
@@ -174,6 +179,8 @@ void AYonePawn::Shoot(const FInputActionValue& Value)
 		// GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::White, TEXT("Shoot" + BulletDirection.ToString()));
 
 		GetWorldTimerManager().SetTimer(TimerHandle, this, &AYonePawn::OnShootCooldownTimerTimeOut, 1, false, ShootCD);
+
+		UGameplayStatics::PlaySound2D(GetWorld(), BulletShootSound);
 	}
 	
 	// GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::White, TEXT("Shoot"));
@@ -195,6 +202,29 @@ bool AYonePawn::IsInMapBoundsVertical(float ZPos)
 
 void AYonePawn::OnShootCooldownTimerTimeOut()
 {
-	CanShoot = true;	
+	if (IsAlive)
+	{
+		CanShoot = true;
+	}	
+}
+
+void AYonePawn::OverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	AEnemy* EnemyCharacter = Cast<AEnemy>(OtherActor);
+
+	if (EnemyCharacter && EnemyCharacter->IsAlive)
+	{
+		if (IsAlive)
+		{
+			IsAlive = false;
+			CanMove = false;
+			CanShoot = false;
+
+			UGameplayStatics::PlaySound2D(GetWorld(), DieSound);
+
+			PlayerDiedDelegate.Broadcast();
+		}
+	}
 }
 

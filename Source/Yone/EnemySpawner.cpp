@@ -30,7 +30,7 @@ void AEnemySpawner::BeginPlay()
 	if (PlayerActor)
 	{
 		Player = Cast<AYonePawn>(PlayerActor);
-		// Player->PlayerDiedDelegate.AddDynamic(this, &AEnemySpawner::OnPlayerDied);
+		Player->PlayerDiedDelegate.AddDynamic(this, &AEnemySpawner::OnPlayerDied);
 	}
 
 	StartSpawning();

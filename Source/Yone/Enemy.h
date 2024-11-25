@@ -7,6 +7,9 @@
 #include "YonePawn.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/Actor.h"
+#include "Sound/SoundBase.h"
+#include "Engine/TimerHandle.h"
+
 #include "Enemy.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FEnemyDiedDelegate);
@@ -26,6 +29,8 @@ public:
 	UPaperFlipbookComponent* EnemyFlipbook;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UPaperFlipbook* DeadFlipbook;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	USoundBase* DieSound;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	AYonePawn* Player;
 
